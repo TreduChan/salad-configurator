@@ -16,3 +16,4 @@ const BaseSelection = () => {
     </div>
     );
 };
+export default BaseSelection;

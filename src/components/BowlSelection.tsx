@@ -22,3 +22,4 @@ const BowlSelection = () => {
     </div>
   );
 };
+export default BowlSelection;
