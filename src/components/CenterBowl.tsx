@@ -1,5 +1,3 @@
-import react from 'react';
-
 const CenterBowl = () => {
     return (
         <div className="flex-1 flex flex-col items-center justify-center min-h-[400px] mt-4 lg:mt-0">
