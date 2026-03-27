@@ -40,7 +40,7 @@ export default function Configurator() {
         <div className="flex flex-col lg:flex-row gap-6 justify-between items-stretch">
             <BowlSelection bowls={bowls} />
             <CenterBowl />
-            <BaseSelection />
+            <BaseSelection ingredients={ingredients.filter(i => i.categoryId === 6)}/>
         </div>
     );
 }

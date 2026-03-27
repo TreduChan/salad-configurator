@@ -1,20 +1,11 @@
-import { IngredientCard } from "./IngredientCard";
-
-type Category = {
-  id: number;
-  name: string;
-}
-
-type Ingredient = {
-  id: number;
-  name: string;
-  categoryId: number;
-}
+import IngredientCard from "./IngredientCard";
+import type {Ingredient, Category} from "../types";
 
 type Props = {
   categories: Category[];
   ingredients: Ingredient[];
 }
+
 export default function IngredientSection({ categories, ingredients}: Props) {
   const filteredCategories = categories.filter(c => c.id !==6);
   const filteredIngredients = ingredients.filter(i => i.categoryId !==6);
