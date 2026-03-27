@@ -3,11 +3,9 @@ import BowlSelection from '../components/BowlSelection';
 import CenterBowl from '../components/CenterBowl';
 import BaseSelection from '../components/BaseSelection';
 import { getBowls, getCategories, getIngredients } from "../services/api";
+import type { Bowl, Category, Ingredient } from "../types";
 
 export default function Configurator() {
-    type Bowl = any;
-    type Category = any;
-    type Ingredient = any;
     const [bowls, setBowls] = useState<Bowl[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
@@ -40,7 +38,7 @@ export default function Configurator() {
 
     return (
         <div className="flex flex-col lg:flex-row gap-6 justify-between items-stretch">
-            <BowlSelection />
+            <BowlSelection bowls={bowls} />
             <CenterBowl />
             <BaseSelection />
         </div>
