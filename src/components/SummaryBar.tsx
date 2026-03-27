@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import React from "react";
 
 const SummaryBar: React.FC = () => {
@@ -10,6 +11,12 @@ const SummaryBar: React.FC = () => {
         <p className="text-sm text-gray-300">
           No ingredients selected
         </p>
+        {/* Print button In later sprints, we will replace this with a real window.print() */}
+        <Link to="/print" className="mt-2">
+          <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full">
+            Print
+          </button>
+        </Link>
       </div>
 
       {/* Right: Totals */}
