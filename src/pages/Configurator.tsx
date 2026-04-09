@@ -4,8 +4,10 @@ import CenterBowl from '../components/CenterBowl';
 import BaseSelection from '../components/BaseSelection';
 import { getBowls, getCategories, getIngredients } from "../services/api";
 import type { Bowl, Category, Ingredient } from "../types";
+import { useIngredientStore } from "../store/useIngredientStore";
 
 export default function Configurator() {
+    const baseType = useIngredientStore((state) => state.baseType);
     const [bowls, setBowls] = useState<Bowl[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
@@ -36,11 +38,14 @@ export default function Configurator() {
         return <div>Loading...</div>;
     }
 
+    const filteredBowls = bowls.filter((bowl) => bowl.base_type_id === baseType);
+    const filteredCategories = categories.filter((category) => category.base_type_id === baseType);
+
     return (
         <div className="flex flex-col lg:flex-row gap-6 justify-between items-stretch">
-            <BowlSelection bowls={bowls} />
+            <BowlSelection bowls={filteredBowls} />
             <CenterBowl />
-            <BaseSelection ingredients={ingredients.filter(i => i.categoryId === 6)}/>
+            <BaseSelection ingredients={ingredients.filter((ingredient) => ingredient.categoryId === 6 && filteredCategories.some((category) => category.id === ingredient.categoryId))}/>
         </div>
     );
 }

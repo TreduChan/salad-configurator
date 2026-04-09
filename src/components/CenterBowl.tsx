@@ -1,13 +1,17 @@
+import { useIngredientStore } from "../store/useIngredientStore";
+
 const CenterBowl = () => {
+  const setBaseType = useIngredientStore((state) => state.setBaseType);
+
     return (
         <div className="flex-1 flex flex-col items-center justify-center min-h-[400px] mt-4 lg:mt-0">
 
             {/*ylin nappulat*/}
             <div className="flex gap-3  mb-6 items-center">
-                <button className="px-4 py-2 bg-gray-300 rounded-full text-sm font-medium">
+              <button onClick={() => setBaseType(1)} className="px-4 py-2 bg-gray-300 rounded-full text-sm font-medium">
                 Salaatti
                 </button>
-                <button className="px-4 py-2 bg-gray-300 rounded-full text-sm font-medium">
+              <button onClick={() => setBaseType(2)} className="px-4 py-2 bg-gray-300 rounded-full text-sm font-medium">
                 Rahka 
                 </button>
                 <div className="flex gap-2">
