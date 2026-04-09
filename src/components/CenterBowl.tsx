@@ -39,13 +39,8 @@ const CenterBowl = () => {
         )}
 
         {activeIngredients.map((ingredient, index) => (
-          <span
-            key={index}
-            className="px-3 py-1 bg-green-200 text-green-800 text-sm rounded-full"
-          >
-            {typeof ingredient === "string"
-              ? ingredient
-              : ingredient.name}
+          <span key={index} className="px-3 py-1 bg-green-200 text-green-800 text-sm rounded-full">
+            {typeof ingredient === "string" ? ingredient : ingredient.name}
           </span>
         ))}
     </div>
