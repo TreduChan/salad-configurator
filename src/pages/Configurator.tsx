@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import BowlSelection from '../components/BowlSelection';
 import CenterBowl from '../components/CenterBowl';
 import BaseSelection from '../components/BaseSelection';
+import IngredientSection from '../components/IngredientSection';
+import SummaryBar from '../components/SummaryBar';
 import { getBowls, getCategories, getIngredients } from "../services/api";
 import type { Bowl, Category, Ingredient } from "../types";
 import { useIngredientStore } from "../store/useIngredientStore";
@@ -42,10 +44,14 @@ export default function Configurator() {
     const filteredCategories = categories.filter((category) => category.base_type_id === baseType);
 
     return (
-        <div className="flex flex-col lg:flex-row gap-6 justify-between items-stretch">
-            <BowlSelection bowls={filteredBowls} />
-            <CenterBowl />
-            <BaseSelection ingredients={ingredients.filter((ingredient) => ingredient.categoryId === 6 && filteredCategories.some((category) => category.id === ingredient.categoryId))}/>
+        <div className="flex flex-col gap-6">
+            <div className="flex flex-col lg:flex-row gap-6 justify-between items-stretch">
+                <BowlSelection bowls={filteredBowls} />
+                <CenterBowl />
+                <BaseSelection ingredients={ingredients.filter((ingredient) => ingredient.categoryId === 6 && filteredCategories.some((category) => category.id === ingredient.categoryId))}/>
+            </div>
+            <IngredientSection categories={filteredCategories} ingredients={ingredients} />
+            <SummaryBar />
         </div>
     );
 }
