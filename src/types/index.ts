@@ -21,12 +21,19 @@ export interface Ingredient extends BaseType {
     diets: string[];
     weight_grams?: number;
 }
-export interface user {
+export interface User {
     id: number;
     email: string;
+    name?: string;
+    role?: string;
+}
+export interface Recipe {
+    id: number;
+    userId: number;
+    name: string;
     bowlId: number;
     ingredientIds: number[];
-    slots: Record<string, Ingredient | null>;
+    slots?: Record<string, Ingredient | null>;
     is_public?: boolean;
 }
 export interface PriceListItem {
