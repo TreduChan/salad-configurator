@@ -1,7 +1,13 @@
 import { useIngredientStore } from "../store/useIngredientStore";
 
+
+
 const CenterBowl = () => {
   const setBaseType = useIngredientStore((state) => state.setBaseType);
+  const slots = useIngredientStore((state) => state.slots);
+  const activeIngredients = Object.values(slots).filter((i) => i !== null);
+
+   
 
     return (
         <div className="flex-1 flex flex-col items-center justify-center min-h-[400px] mt-4 lg:mt-0">
@@ -25,8 +31,18 @@ const CenterBowl = () => {
             </div>
 
     {/*kulho*/}
-    <div className="w-80 h-80 rounded-full border-[12px] border-gray-200 bg-gray-50 flex items-center justify-center shadow-inner relative">
-    {/* Optional inner content */}
+    <div className="w-80 h-80 rounded-full border-[12px] border-gray-200 bg-gray-50 flex flex-wrap items-center justify-center gap-2 p-4 shadow-inner relative overflow-auto">
+     {activeIngredients.length === 0 && (
+          <span className="text-gray-400 text-sm">
+            Valitse ainesosia
+          </span>
+        )}
+
+        {activeIngredients.map((ingredient, index) => (
+          <span key={index} className="px-3 py-1 bg-green-200 text-green-800 text-sm rounded-full">
+            {typeof ingredient === "string" ? ingredient : ingredient.name}
+          </span>
+        ))}
     </div>
 
      {/* Bottom Info */}
