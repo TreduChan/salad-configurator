@@ -2,8 +2,8 @@ export interface BaseType {
   id: number;
   name: string;
   price?: number;
-  image_url: string;
-  barcode_url: string;
+  image_url?: string;
+  barcode_url?: string;
 }
 export interface Bowl extends BaseType {
     base_type_id?: number;
@@ -14,7 +14,7 @@ export interface Bowl extends BaseType {
 export interface Category {
     id: number;
     name: string;
-    base_type_id: number;
+    base_type_id?: number;
 }
 export interface Ingredient extends BaseType {
     categoryId: number;
