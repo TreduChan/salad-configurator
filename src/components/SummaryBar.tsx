@@ -5,7 +5,7 @@ import { useIngredientStore } from "../store/useIngredientStore";
 const SummaryBar: React.FC = () => {
   const slots = useIngredientStore((state) => state.slots);
   const removeIngredient = useIngredientStore((state) => state.removeIngredient);
-  const activeIngredients = Object.values(slots).filter((i) => i !== null);
+  const activeIngredients = Object.values(slots).filter((i): i is NonNullable<typeof i> => i !== null);
 
   return (
     <div className="bg-zinc-800 rounded-[3rem] p-8 text-white w-full flex flex-col md:flex-row gap-8 shadow-xl">
@@ -21,14 +21,14 @@ const SummaryBar: React.FC = () => {
           <div className="flex flex-wrap gap-2 mb-4">
             {activeIngredients.map((ingredient) => (
               <span
-                key={ingredient!.id}
+                key={ingredient.id}
                 className="flex items-center gap-1 bg-zinc-700 text-white text-sm px-3 py-1 rounded-full"
               >
-                {ingredient!.name}
+                {ingredient.name}
                 <button
-                  onClick={() => removeIngredient(ingredient!.id)}
+                  onClick={() => removeIngredient(ingredient.id)}
                   className="ml-1 text-gray-400 hover:text-white leading-none"
-                  aria-label={`Remove ${ingredient!.name}`}
+                  aria-label={`Remove ${ingredient.name}`}
                 >
                   ×
                 </button>

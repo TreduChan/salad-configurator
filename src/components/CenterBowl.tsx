@@ -3,7 +3,7 @@ import { useIngredientStore } from "../store/useIngredientStore";
 const CenterBowl = () => {
   const setBaseType = useIngredientStore((state) => state.setBaseType);
   const slots = useIngredientStore((state) => state.slots);
-  const activeIngredients = Object.values(slots).filter((i) => i !== null);
+  const activeIngredients = Object.values(slots).filter((i): i is NonNullable<typeof i> => i !== null);
 
     return (
         <div className="flex-1 flex flex-col items-center justify-center min-h-[400px] mt-4 lg:mt-0">
@@ -30,10 +30,10 @@ const CenterBowl = () => {
     <div className="w-80 h-80 rounded-full border-[12px] border-gray-200 bg-gray-50 flex flex-wrap items-center justify-center gap-2 p-6 shadow-inner relative overflow-hidden">
       {activeIngredients.map((ingredient) => (
         <span
-          key={ingredient!.id}
+          key={ingredient.id}
           className="bg-[#A2D135] text-black text-xs font-semibold px-3 py-1 rounded-full"
         >
-          {ingredient!.name}
+          {ingredient.name}
         </span>
       ))}
     </div>
