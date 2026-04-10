@@ -1,9 +1,7 @@
 export default function Community() {
     return (
         <div>
-            <p>
-                Jotain Textiääääääööööö
-            </p>
+            <p>Coming soon...</p>
         </div>
     );
 }
