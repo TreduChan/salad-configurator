@@ -15,6 +15,8 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
     console.log("Email:", email);
     console.log("Password:", password);
+    setEmail("");
+    setPassword("");
   };
 
   return (
