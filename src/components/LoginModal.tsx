@@ -1,7 +1,12 @@
 import { useState } from "react";
 import Modal from "./Modal";
 
-export default function LoginModal() {
+type LoginModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -13,8 +18,9 @@ export default function LoginModal() {
   };
 
   return (
-    <Modal>
-      <form onSubmit={handleSubmit}>
+    
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <h2>Login</h2>
 
         <input
@@ -31,7 +37,8 @@ export default function LoginModal() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button type="submit">Login</button>
+        <button type="submit" className="bg-[#A2D135] text-black p-2 rounded">Login</button>
+        <button type="button" onClick={onClose}>Close</button>
       </form>
     </Modal>
   );
