@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import React from "react";
 import { useIngredientStore } from "../store/useIngredientStore";
+import type { Ingredient } from "../types";
 import { calculateTotalWeight } from "../utils/calculations";
 
 const SummaryBar: React.FC = () => {
@@ -8,7 +9,7 @@ const SummaryBar: React.FC = () => {
   const removeIngredient = useIngredientStore((state) => state.removeIngredient);
 
   const activeIngredients = Object.values(slots).filter(
-    (i) => i !== null
+    (i): i is Ingredient => i !== null
   );
   const totalWeightGrams = calculateTotalWeight(activeIngredients);
 
