@@ -1,38 +1,83 @@
 import { useEffect, useState } from "react";
+import type { FormEvent } from "react";
 import Modal from "./Modal";
+import { saveRecipe } from "../services/api";
+import { useAuthStore } from "../store/useAuthStore";
+import { useIngredientStore } from "../store/useIngredientStore";
 
 type SaveRecipeModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (recipeName: string, isPublic: boolean) => void;
-  initialRecipeName?: string;
-  initialIsPublic?: boolean;
+  onSaved?: () => void;
 };
 
 export default function SaveRecipeModal({
   isOpen,
   onClose,
-  onSave,
-  initialRecipeName = "",
-  initialIsPublic = false,
+  onSaved,
 }: SaveRecipeModalProps) {
-  const [recipeName, setRecipeName] = useState(initialRecipeName);
-  const [isPublic, setIsPublic] = useState(initialIsPublic);
+  const [recipeName, setRecipeName] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const token = useAuthStore((state) => state.token);
+  const slots = useIngredientStore((state) => state.slots);
+  const selectedBowl = useIngredientStore((state) => state.selectedBowl);
 
   useEffect(() => {
     if (!isOpen) return;
-    setRecipeName(initialRecipeName);
-    setIsPublic(initialIsPublic);
-  }, [isOpen, initialRecipeName, initialIsPublic]);
+    setRecipeName("");
+    setIsPublic(false);
+    setError(null);
+  }, [isOpen]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const trimmedName = recipeName.trim();
-    if (!trimmedName) return;
+    if (!trimmedName) {
+      setError("Recipe name is required.");
+      return;
+    }
 
-    onSave(trimmedName, isPublic);
-    onClose();
+    if (!token) {
+      setError("You must be logged in to save a recipe.");
+      return;
+    }
+
+    if (!selectedBowl) {
+      setError("Please select a bowl before saving.");
+      return;
+    }
+
+    const ingredientIds = Object.values(slots)
+      .filter((ingredient) => ingredient !== null)
+      .map((ingredient) => ingredient.id);
+
+    if (ingredientIds.length === 0) {
+      setError("Please add at least one ingredient before saving.");
+      return;
+    }
+
+    setError(null);
+    setIsSaving(true);
+
+    try {
+      await saveRecipe(token, {
+        name: trimmedName,
+        bowlId: selectedBowl.id,
+        ingredientIds,
+        isPublic,
+      });
+
+      onSaved?.();
+      onClose();
+    } catch {
+      setError("Failed to save recipe. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -60,6 +105,8 @@ export default function SaveRecipeModal({
           <span>Make Public</span>
         </label>
 
+        {error && <p className="text-sm text-red-500">{error}</p>}
+
         <div className="flex justify-end gap-2 mt-2">
           <button
             type="button"
@@ -70,10 +117,10 @@ export default function SaveRecipeModal({
           </button>
           <button
             type="submit"
-            disabled={!recipeName.trim()}
+            disabled={isSaving}
             className="px-4 py-2 rounded bg-[#A2D135] text-black font-semibold disabled:opacity-50"
           >
-            Save
+            {isSaving ? "Saving..." : "Save"}
           </button>
         </div>
       </form>
