@@ -1,18 +1,17 @@
 import { Link } from "react-router-dom";
 import React from "react";
 import { useIngredientStore } from "../store/useIngredientStore";
+import type { Ingredient } from "../types";
+import { calculateTotalWeight } from "../utils/calculations";
 
 const SummaryBar: React.FC = () => {
   const slots = useIngredientStore((state) => state.slots);
   const removeIngredient = useIngredientStore((state) => state.removeIngredient);
 
   const activeIngredients = Object.values(slots).filter(
-    (i) => i !== null
+    (i): i is Ingredient => i !== null
   );
-  const totalWeightGrams = activeIngredients.reduce(
-    (sum, ingredient) => sum + (ingredient.weight_grams ?? 0),
-    0
-  );
+  const totalWeightGrams = calculateTotalWeight(activeIngredients);
 
   return (
     <div className="bg-zinc-800 rounded-[3rem] p-8 text-white w-full flex flex-col sm:flex-row gap-8 shadow-xl">
