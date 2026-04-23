@@ -42,3 +42,9 @@ export interface PriceListItem {
     price: number;
     type?: string;
 }
+export type AuthStore = {
+  token: string | null;
+  userName: string | null;
+  login: (token: string, userName: string) => void;
+  logout: () => void;
+};
