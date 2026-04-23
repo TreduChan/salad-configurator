@@ -21,3 +21,7 @@ export async function getCategories() {
 export async function getIngredients() {
     return fetchData('ingredients')
 }
+
+export async function getPrices() {
+  return fetchData('prices')
+}

@@ -4,8 +4,8 @@ import CenterBowl from '../components/CenterBowl';
 import BaseSelection from '../components/BaseSelection';
 import IngredientSection from '../components/IngredientSection';
 import SummaryBar from '../components/SummaryBar';
-import { getBowls, getCategories, getIngredients } from "../services/api";
-import type { Bowl, Category, Ingredient } from "../types";
+import { getBowls, getCategories, getIngredients, getPrices } from "../services/api";
+import type { Bowl, Category, Ingredient, PriceListItem } from "../types";
 import { useIngredientStore } from "../store/useIngredientStore";
 
 export default function Configurator() {
@@ -13,6 +13,7 @@ export default function Configurator() {
     const [bowls, setBowls] = useState<Bowl[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+    const [prices, setPrices] = useState<PriceListItem[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -27,6 +28,9 @@ export default function Configurator() {
 
                 const ingredientsData = await getIngredients();
                 setIngredients(ingredientsData);
+
+                const pricesData = await getPrices();
+                setPrices(pricesData);
             } catch (error) {
                 console.error("Failed to fetch data:", error);
             } finally {
@@ -51,7 +55,7 @@ export default function Configurator() {
                 <BaseSelection ingredients={ingredients.filter((ingredient) => ingredient.categoryId === 6 && filteredCategories.some((category) => category.id === ingredient.categoryId))}/>
             </div>
             <IngredientSection categories={filteredCategories} ingredients={ingredients} />
-            <SummaryBar />
+            <SummaryBar prices={prices} />
         </div>
     );
 }
