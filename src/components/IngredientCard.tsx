@@ -1,5 +1,9 @@
 import type { Ingredient } from '../types'
 import { useIngredientStore } from '../store/useIngredientStore'
+import { usePriceStore } from "../store/usePricesStore";
+import { useAuthStore } from "../store/useAuthStore";
+
+
 
 interface Props {
   ingredient: Ingredient
@@ -7,6 +11,12 @@ interface Props {
 
 export default function IngredientCard({ ingredient }: Props) {
   const addIngredient = useIngredientStore((s) => s.addIngredient)
+
+    const prices = usePriceStore((s) => s.prices);
+    const token = useAuthStore((s) => s.token);
+    const isLoggedIn = !!token;
+    const priceItem = prices.find((p) => String(p.item_id) === String(ingredient.id));
+
 
   return (
     <div
@@ -17,6 +27,18 @@ export default function IngredientCard({ ingredient }: Props) {
         <div className="text-center">
           <div className="text-sm text-gray-500">{ingredient.categoryId}</div>
           <div className="text-lg font-semibold truncate">{ingredient.name}</div>
+
+      <div className="text-sm mt-1 text-green-600 font-medium">
+            {isLoggedIn ? (
+              priceItem ? (
+                <>+ {priceItem.price.toFixed(2)} €</>
+              ) : (
+                <>Price not available</>
+              )
+            ) : (
+              <>Login to see price</>
+            )}
+          </div>
         </div>
       </div>
 
