@@ -54,9 +54,9 @@ const SummaryBar: React.FC = () => {
       {/* Right: Totals */}
       <div className="flex-1 flex flex-col justify-center items-center gap-6">
         
-        {/* Weight */}
+        {/* Portion count */}
         <div className="bg-white text-black font-black text-2xl py-3 w-32 rounded-full mb-2 shadow-md text-center">
-          500 g
+          {activeIngredients.length} kpl
         </div>
 
         {/* Price */}
