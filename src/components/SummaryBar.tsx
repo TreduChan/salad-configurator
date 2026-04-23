@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import React from "react";
 import { useIngredientStore } from "../store/useIngredientStore";
+import { calculateTotalWeight } from "../utils/calculations";
 
 const SummaryBar: React.FC = () => {
   const slots = useIngredientStore((state) => state.slots);
@@ -9,6 +10,8 @@ const SummaryBar: React.FC = () => {
   const activeIngredients = Object.values(slots).filter(
     (i) => i !== null
   );
+  const totalWeightGrams = calculateTotalWeight(activeIngredients);
+
   return (
     <div className="bg-zinc-800 rounded-[3rem] p-8 text-white w-full flex flex-col sm:flex-row gap-8 shadow-xl">
       
@@ -54,9 +57,9 @@ const SummaryBar: React.FC = () => {
       {/* Right: Totals */}
       <div className="flex-1 flex flex-col justify-center items-center gap-6">
         
-        {/* Portion count */}
+        {/* Arvioitu paino */}
         <div className="bg-white text-black font-black text-2xl py-3 w-32 rounded-full mb-2 shadow-md text-center">
-          {activeIngredients.length} kpl
+          {totalWeightGrams} g
         </div>
 
         {/* Price */}
