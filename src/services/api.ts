@@ -25,3 +25,19 @@ export async function getIngredients() {
 export async function getPrices() {
   return fetchData('prices')
 }
+
+export async function login(email: string, password: string) {
+  const response = await fetch(`${Base_url}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Invalid credentials");
+  }
+
+  return response.json();
+}
