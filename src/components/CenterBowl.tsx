@@ -84,6 +84,7 @@ const CenterBowl = () => {
       <SaveRecipeModal
         isOpen={isSaveModalOpen}
         onClose={() => setIsSaveModalOpen(false)}
+        onSaved={() => clearSelection()}
       />
     </div>
   );

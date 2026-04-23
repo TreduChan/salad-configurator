@@ -8,48 +8,46 @@ import { useIngredientStore } from "../store/useIngredientStore";
 type SaveRecipeModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  onSaved?: () => void;
 };
 
-export default function SaveRecipeModal({ isOpen, onClose }: SaveRecipeModalProps) {
+export default function SaveRecipeModal({
+  isOpen,
+  onClose,
+  onSaved,
+}: SaveRecipeModalProps) {
   const [recipeName, setRecipeName] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const token = useAuthStore((state) => state.token);
   const slots = useIngredientStore((state) => state.slots);
   const selectedBowl = useIngredientStore((state) => state.selectedBowl);
-  const clearSelection = useIngredientStore((state) => state.clearSelection);
 
   useEffect(() => {
     if (!isOpen) return;
     setRecipeName("");
     setIsPublic(false);
-    setIsSaving(false);
     setError(null);
-    setSuccessMessage(null);
   }, [isOpen]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const trimmedName = recipeName.trim();
 
+    const trimmedName = recipeName.trim();
     if (!trimmedName) {
       setError("Recipe name is required.");
-      setSuccessMessage(null);
       return;
     }
 
     if (!token) {
       setError("You must be logged in to save a recipe.");
-      setSuccessMessage(null);
       return;
     }
 
     if (!selectedBowl) {
       setError("Please select a bowl before saving.");
-      setSuccessMessage(null);
       return;
     }
 
@@ -59,12 +57,10 @@ export default function SaveRecipeModal({ isOpen, onClose }: SaveRecipeModalProp
 
     if (ingredientIds.length === 0) {
       setError("Please add at least one ingredient before saving.");
-      setSuccessMessage(null);
       return;
     }
 
     setError(null);
-    setSuccessMessage(null);
     setIsSaving(true);
 
     try {
@@ -75,13 +71,10 @@ export default function SaveRecipeModal({ isOpen, onClose }: SaveRecipeModalProp
         isPublic,
       });
 
-      setSuccessMessage("Recipe saved!");
-      clearSelection();
-      setRecipeName("");
-      setIsPublic(false);
+      onSaved?.();
+      onClose();
     } catch {
       setError("Failed to save recipe. Please try again.");
-      setSuccessMessage(null);
     } finally {
       setIsSaving(false);
     }
@@ -113,7 +106,6 @@ export default function SaveRecipeModal({ isOpen, onClose }: SaveRecipeModalProp
         </label>
 
         {error && <p className="text-sm text-red-500">{error}</p>}
-        {successMessage && <p className="text-sm text-green-600">{successMessage}</p>}
 
         <div className="flex justify-end gap-2 mt-2">
           <button
@@ -121,7 +113,7 @@ export default function SaveRecipeModal({ isOpen, onClose }: SaveRecipeModalProp
             onClick={onClose}
             className="px-4 py-2 rounded border border-gray-300"
           >
-            Close
+            Cancel
           </button>
           <button
             type="submit"
