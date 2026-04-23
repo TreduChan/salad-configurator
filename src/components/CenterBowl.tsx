@@ -4,8 +4,15 @@ import { useIngredientStore } from "../store/useIngredientStore";
 
 const CenterBowl = () => {
   const setBaseType = useIngredientStore((state) => state.setBaseType);
+  const clearSelection = useIngredientStore((state) => state.clearSelection);
   const slots = useIngredientStore((state) => state.slots);
   const activeIngredients = Object.values(slots).filter((i) => i !== null);
+
+  const handleClear = () => {
+    if (window.confirm('Are you sure you want to empty the bowl?')) {
+      clearSelection();
+    }
+  };
 
    
 
@@ -21,12 +28,30 @@ const CenterBowl = () => {
                 Rahka 
                 </button>
                 <div className="flex gap-2">
-                    <span className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                    🥗
-                    </span>
-                    <span className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                    🥄
-                    </span>
+                    <button
+                      type="button"
+                      onClick={handleClear}
+                      className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center"
+                      aria-label="Empty bowl"
+                    >
+                      🗑️
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => alert('Feature coming soon!')}
+                      className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center"
+                      aria-label="Undo"
+                    >
+                      ↩️
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => alert('Feature coming soon!')}
+                      className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center"
+                      aria-label="Save"
+                    >
+                      💾
+                    </button>
                 </div>
             </div>
 
