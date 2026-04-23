@@ -22,6 +22,10 @@ export async function getIngredients() {
     return fetchData('ingredients')
 }
 
+export async function getPrices() {
+  return fetchData('prices')
+}
+
 export async function login(email: string, password: string) {
   const response = await fetch(`${Base_url}/auth/login`, {
     method: "POST",

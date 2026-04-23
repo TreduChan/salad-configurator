@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
 import React from "react";
 import { useIngredientStore } from "../store/useIngredientStore";
-import type { Ingredient } from "../types";
+import type { Ingredient, PriceListItem } from "../types";
 import { calculateTotalWeight } from "../utils/calculations";
 
-const SummaryBar: React.FC = () => {
+interface SummaryBarProps {
+  prices: PriceListItem[];
+}
+
+const SummaryBar: React.FC<SummaryBarProps> = ({ prices }) => {
   const slots = useIngredientStore((state) => state.slots);
   const removeIngredient = useIngredientStore((state) => state.removeIngredient);
 
@@ -12,6 +16,14 @@ const SummaryBar: React.FC = () => {
     (i): i is Ingredient => i !== null
   );
   const totalWeightGrams = calculateTotalWeight(activeIngredients);
+  const totalPrice = activeIngredients.reduce((sum, ingredient) => {
+    const matchedPrice = prices.find((priceItem) => priceItem.item_id === ingredient.id);
+    return sum + (matchedPrice?.price ?? 0);
+  }, 0);
+  const formattedPrice = new Intl.NumberFormat("fi-FI", {
+    style: "currency",
+    currency: "EUR",
+  }).format(totalPrice);
 
   return (
     <div className="bg-zinc-800 rounded-[3rem] p-8 text-white w-full flex flex-col sm:flex-row gap-8 shadow-xl">
@@ -65,7 +77,7 @@ const SummaryBar: React.FC = () => {
 
         {/* Price */}
         <div className="bg-white text-black font-black text-2xl py-3 w-32 rounded-full mb-2 shadow-md text-center">
-          9,95 €
+          {formattedPrice}
         </div>
 
       </div>
