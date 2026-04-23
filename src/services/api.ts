@@ -1,5 +1,12 @@
 import type { PriceListItem } from "../types";
 
+export type SaveRecipePayload = {
+  name: string;
+  bowlId: number;
+  ingredientIds: number[];
+  isPublic?: boolean;
+};
+
 const Base_url = 'https://fresse-api.onrender.com/api'
 
 async function fetchData(endpoint: string) {
@@ -55,6 +62,28 @@ export async function login(email: string, password: string) {
 
   if (!response.ok) {
     throw new Error("Invalid credentials");
+  }
+
+  return response.json();
+}
+
+export async function saveRecipe(token: string, recipeData: SaveRecipePayload) {
+  const response = await fetch(`${Base_url}/recipes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name: recipeData.name,
+      bowlId: recipeData.bowlId,
+      ingredientIds: recipeData.ingredientIds,
+      isPublic: recipeData.isPublic ?? false,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}`);
   }
 
   return response.json();

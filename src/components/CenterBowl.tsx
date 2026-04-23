@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { useIngredientStore } from "../store/useIngredientStore";
+import SaveRecipeModal from "./SaveRecipeModal";
 
 
 
 const CenterBowl = () => {
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const setBaseType = useIngredientStore((state) => state.setBaseType);
   const clearSelection = useIngredientStore((state) => state.clearSelection);
   const slots = useIngredientStore((state) => state.slots);
@@ -48,7 +51,7 @@ const CenterBowl = () => {
                     </button>
                     <button
                       type="button"
-                      onClick={() => alert('Feature coming soon!')}
+                      onClick={() => setIsSaveModalOpen(true)}
                       className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center"
                       aria-label="Save"
                     >
@@ -77,6 +80,11 @@ const CenterBowl = () => {
         <p className="text-lg font-semibold">100 g / 1,99 €</p>
         <p className="text-sm text-gray-500">{selectedBowl ? selectedBowl.volume : 0} ml</p>
       </div>
+
+      <SaveRecipeModal
+        isOpen={isSaveModalOpen}
+        onClose={() => setIsSaveModalOpen(false)}
+      />
     </div>
   );
 };
