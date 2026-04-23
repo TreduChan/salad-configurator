@@ -9,6 +9,11 @@ const SummaryBar: React.FC = () => {
   const activeIngredients = Object.values(slots).filter(
     (i) => i !== null
   );
+  const totalWeightGrams = activeIngredients.reduce(
+    (sum, ingredient) => sum + (ingredient.weight_grams ?? 0),
+    0
+  );
+
   return (
     <div className="bg-zinc-800 rounded-[3rem] p-8 text-white w-full flex flex-col sm:flex-row gap-8 shadow-xl">
       
@@ -54,9 +59,9 @@ const SummaryBar: React.FC = () => {
       {/* Right: Totals */}
       <div className="flex-1 flex flex-col justify-center items-center gap-6">
         
-        {/* Portion count */}
+        {/* Arvioitu paino */}
         <div className="bg-white text-black font-black text-2xl py-3 w-32 rounded-full mb-2 shadow-md text-center">
-          {activeIngredients.length} kpl
+          {totalWeightGrams} g
         </div>
 
         {/* Price */}
