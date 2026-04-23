@@ -1,3 +1,5 @@
+import type { PriceListItem } from "../types";
+
 const Base_url = 'https://fresse-api.onrender.com/api'
 
 async function fetchData(endpoint: string) {
@@ -24,6 +26,22 @@ export async function getIngredients() {
 
 export async function getPrices() {
   return fetchData('prices')
+}
+
+export async function getPricesWithToken(token: string): Promise<PriceListItem[]> {
+  const response = await fetch(`${Base_url}/prices`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`, // ✅ REQUIRED
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}`);
+  }
+
+  return response.json();
 }
 
 export async function login(email: string, password: string) {
