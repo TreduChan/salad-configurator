@@ -21,7 +21,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
      try {
       const data = await loginApi(email, password);
 
-      authLogin(data.token, data.userName);
+      authLogin(data.token, data.name);
 
       setEmail("");
       setPassword("");
