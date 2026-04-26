@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useIngredientStore } from "../store/useIngredientStore";
 import SaveRecipeModal from "./SaveRecipeModal";
+import divider4 from "../assets/jakaja_4_lohkoa.png";
+import divider6 from "../assets/jakaja_6_lohkoa.png";
 
 
 
@@ -9,8 +11,9 @@ const CenterBowl = () => {
   const setBaseType = useIngredientStore((state) => state.setBaseType);
   const clearSelection = useIngredientStore((state) => state.clearSelection);
   const slots = useIngredientStore((state) => state.slots);
-  const activeIngredients = Object.values(slots).filter((i) => i !== null);
+  const clearSlot = useIngredientStore((state) => state.clearSlot);
   const selectedBowl = useIngredientStore((state) => state.selectedBowl);
+  const totalSlots = selectedBowl?.slot_count ?? 6;
 
 
   const handleClear = () => {
@@ -18,8 +21,11 @@ const CenterBowl = () => {
       clearSelection();
     }
   };
-
    
+  const dividerMap: Record<number, string> = {
+  4: divider4,
+  6: divider6,
+  };
 
     return (
         <div className="flex-1 flex flex-col items-center justify-center min-h-[400px] mt-4 lg:mt-0">
@@ -61,19 +67,60 @@ const CenterBowl = () => {
             </div>
 
     {/*kulho*/}
-    <div className="w-80 h-80 rounded-full border-[12px] border-gray-200 bg-gray-50 flex flex-wrap items-center justify-center gap-2 p-4 shadow-inner relative overflow-auto">
-     {activeIngredients.length === 0 && (
-          <span className="text-gray-400 text-sm">
-            Valitse ainesosia
-          </span>
-        )}
+    <div className="w-80 h-80 rounded-full border-[12px] border-gray-200 bg-gray-50 flex flex-wrap items-center justify-center gap-2 p-4 shadow-inner relative overflow-hidden">
+  
+  {/* BASE BACKGROUND */}
+  {selectedBowl?.base_type_id && (
+    <img
+      src={selectedBowl.image_url}
+      alt="base"
+      className="absolute inset-0 w-full h-full object-cover z-10"
+    />
+  )}
 
-        {activeIngredients.map((ingredient, index) => (
-          <span key={index} className="px-3 py-1 bg-green-200 text-green-800 text-sm rounded-full">
-            {typeof ingredient === "string" ? ingredient : ingredient.name}
-          </span>
-        ))}
-    </div>
+  {/* DIVIDER OVERLAY */}
+  {selectedBowl?.slot_count && (
+  <img
+    src={dividerMap[selectedBowl.slot_count] ?? divider6}
+    alt="divider"
+    className="absolute inset-0 w-full h-full object-contain z-20 pointer-events-none"
+  />
+  )}
+ {Object.entries(slots)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([slotKey, ingredient], index) => {
+    if (!ingredient) return null;
+
+    const angle = (360 / totalSlots) * index + (360 / totalSlots) / 2;
+
+    return (
+      <div
+        key={slotKey}
+        className="absolute z-30 flex flex-col items-center"
+        style={{
+          transform: `rotate(${angle}deg) translate(70px)`,
+        }}
+      >
+        {/* WEDGE IMAGE */}
+        <div style={{ transform: `rotate(-${angle}deg)` }} className="relative flex items-center justify-center">
+        <img
+          src={ingredient.wedge_image_url}
+          alt={ingredient.name}
+          className="w-12 h-12 object-contain"
+        />
+
+        {/* REMOVE BUTTON */}
+        <button
+          onClick={() => clearSlot(slotKey)}
+          className="absolute -bottom-5 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+          ×
+        </button>
+      </div>
+      </div>
+    );
+  })}
+      </div>
+  
 
      {/* Bottom Info */}
       <div className="mt-6 text-center">

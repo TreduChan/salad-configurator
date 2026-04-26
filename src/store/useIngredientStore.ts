@@ -29,7 +29,7 @@ export const useIngredientStore = create<IngredientStore>((set, get) => ({
 			const slotCount = state.selectedBowl?.slot_count ?? 0
 			let targetSlot: string | null = null
 			for (let i = 1; i <= slotCount; i++) {
-				const key = `slot-${i}`
+				const key = `${i}`
 				if (state.slots[key] == null) {
 					targetSlot = key
 					break
