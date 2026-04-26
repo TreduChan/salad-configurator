@@ -1,4 +1,4 @@
-import type { PriceListItem } from "../types";
+import type { PriceListItem, Ingredient } from "../types";
 
 export type SaveRecipePayload = {
   name: string;
@@ -9,14 +9,15 @@ export type SaveRecipePayload = {
 
 const Base_url = 'https://fresse-api.onrender.com/api'
 
-async function fetchData(endpoint: string) {
-  const response = await fetch(`${Base_url}/${endpoint}`)
+
+async function fetchData<T>(endpoint: string): Promise<T> {
+  const response = await fetch(`${Base_url}/${endpoint}`);
 
   if (!response.ok) {
-    throw new Error(`API error: ${response.status}`)
+    throw new Error(`API error: ${response.status}`);
   }
 
-  return response.json()
+  return response.json();
 }
 
 export async function getBowls(typeId?: number) {
@@ -29,8 +30,12 @@ export async function getCategories(typeId?: number) {
   return fetchData(endpoint)
 }
 
-export async function getIngredients() {
-    return fetchData('ingredients')
+export async function getIngredients(categoryId?: number) {
+  const endpoint = categoryId
+    ? `ingredients?category_id=${categoryId}`
+    : "ingredients";
+
+  return fetchData<Ingredient[]>(endpoint);
 }
 
 export async function getBaseIngredients() {
