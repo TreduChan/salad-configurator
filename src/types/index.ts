@@ -20,6 +20,7 @@ export interface Ingredient extends BaseType {
     categoryId: number;
     diets: string[];
     weight_grams?: number;
+    base_type_id?: number;
 }
 export interface User {
     id: number;

@@ -4,7 +4,7 @@ import CenterBowl from '../components/CenterBowl';
 import BaseSelection from '../components/BaseSelection';
 import IngredientSection from '../components/IngredientSection';
 import SummaryBar from '../components/SummaryBar';
-import { getBowls, getCategories, getIngredients, getPrices } from "../services/api";
+import { getBaseIngredients, getBowls, getCategories, getIngredients, getPrices } from "../services/api";
 import type { Bowl, Category, Ingredient, PriceListItem } from "../types";
 import { useIngredientStore } from "../store/useIngredientStore";
 
@@ -13,6 +13,7 @@ export default function Configurator() {
     const [bowls, setBowls] = useState<Bowl[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+    const [baseIngredients, setBaseIngredients] = useState<Ingredient[]>([]);
     const [prices, setPrices] = useState<PriceListItem[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -28,6 +29,9 @@ export default function Configurator() {
 
                 const ingredientsData = await getIngredients();
                 setIngredients(ingredientsData);
+
+                const baseIngredientsData = await getBaseIngredients();
+                setBaseIngredients(baseIngredientsData);
 
                 const pricesData = await getPrices();
                 setPrices(pricesData);
@@ -52,7 +56,7 @@ export default function Configurator() {
             <div className="flex flex-col lg:flex-row gap-6 justify-between items-stretch">
                 <BowlSelection bowls={filteredBowls} />
                 <CenterBowl />
-                <BaseSelection ingredients={ingredients.filter((ingredient) => ingredient.categoryId === 6 && filteredCategories.some((category) => category.id === ingredient.categoryId))}/>
+                <BaseSelection ingredients={baseIngredients} />
             </div>
             <IngredientSection categories={filteredCategories} ingredients={ingredients} />
             <SummaryBar prices={prices} />
