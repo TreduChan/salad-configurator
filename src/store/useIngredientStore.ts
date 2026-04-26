@@ -23,7 +23,7 @@ export const useIngredientStore = create<IngredientStore>((set, get) => ({
 	clearSelection: () => set({ slots: {}, baseType: 1, selectedBowl: null }),
 	addIngredient: (item) => {
 		const state = get()
-		if (item.categoryId === 6) {
+		if (item.category_Id === 6) {
 			set({ slots: { ...state.slots, base: item } })
 		} else {
 			const slotCount = state.selectedBowl?.slot_count ?? 0

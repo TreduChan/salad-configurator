@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useIngredientStore } from "../store/useIngredientStore";
 import SaveRecipeModal from "./SaveRecipeModal";
+import divider4 from "../assets/jakaja_4_lohkoa.png";
+import divider6 from "../assets/jakaja_6_lohkoa.png";
 
 
 
@@ -13,13 +15,17 @@ const CenterBowl = () => {
   const selectedBowl = useIngredientStore((state) => state.selectedBowl);
 
 
+
   const handleClear = () => {
     if (window.confirm('Are you sure you want to empty the bowl?')) {
       clearSelection();
     }
   };
-
    
+  const dividerMap: Record<number, string> = {
+  4: divider4,
+  6: divider6,
+  };
 
     return (
         <div className="flex-1 flex flex-col items-center justify-center min-h-[400px] mt-4 lg:mt-0">
@@ -61,18 +67,25 @@ const CenterBowl = () => {
             </div>
 
     {/*kulho*/}
-    <div className="w-80 h-80 rounded-full border-[12px] border-gray-200 bg-gray-50 flex flex-wrap items-center justify-center gap-2 p-4 shadow-inner relative overflow-auto">
-     {activeIngredients.length === 0 && (
-          <span className="text-gray-400 text-sm">
-            Valitse ainesosia
-          </span>
-        )}
+    <div className="w-80 h-80 rounded-full border-[12px] border-gray-200 bg-gray-50 flex flex-wrap items-center justify-center gap-2 p-4 shadow-inner relative overflow-hidden">
+  
+  {/* BASE BACKGROUND */}
+  {selectedBowl?.base_type_id && (
+    <img
+      src={selectedBowl.image_url}
+      alt="base"
+      className="absolute inset-0 w-full h-full object-cover z-10"
+    />
+  )}
 
-        {activeIngredients.map((ingredient, index) => (
-          <span key={index} className="px-3 py-1 bg-green-200 text-green-800 text-sm rounded-full">
-            {typeof ingredient === "string" ? ingredient : ingredient.name}
-          </span>
-        ))}
+  {/* DIVIDER OVERLAY */}
+  {selectedBowl?.slot_count && (
+  <img
+    src={dividerMap[selectedBowl.slot_count] ?? divider6}
+    alt="divider"
+    className="absolute inset-0 w-full h-full object-contain z-20 pointer-events-none"
+  />
+  )}
     </div>
 
      {/* Bottom Info */}
