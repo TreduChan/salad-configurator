@@ -1,4 +1,5 @@
 import type {Ingredient } from "../types";
+import { useIngredientStore } from "../store/useIngredientStore";
 
 
 type Props = {
@@ -6,15 +7,26 @@ type Props = {
 }
 
 const BaseSelection = ({ingredients} : Props) => {
+  const addIngredient = useIngredientStore((state) => state.addIngredient);
+  const selectedBaseId = useIngredientStore((state) => state.slots.base?.id);
+
     return (
     <div className="bg-zinc-800 rounded-[3rem] p-6 text-white w-full lg:w-1/4 flex flex-col items-center shadow-lg">
 
     <div className="bg-white text-black font-bold rounded-full w-8 h-8 flex items-center justify-center mb-4 shrink-0">2</div>
     
     <div className="w-full space-y-3">
-      {ingredients.map((Ingredient) => (
-        <button key={Ingredient.id} className="border-b border-gray-600 pb-2 flex justify-end gap-4 items-center">
-          {Ingredient.name}
+      {ingredients.map((ingredient) => (
+        <button
+          key={ingredient.id}
+          onClick={() => addIngredient(ingredient)}
+          className={`w-full border-b pb-2 flex justify-end gap-4 items-center transition-colors ${
+            selectedBaseId === ingredient.id
+              ? "border-[#A2D135] text-[#A2D135]"
+              : "border-gray-600 text-white"
+          }`}
+        >
+          {ingredient.name}
         </button>
       ))}
         </div>
