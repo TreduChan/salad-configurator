@@ -56,7 +56,14 @@ export default function Configurator() {
             <div className="flex flex-col lg:flex-row gap-6 justify-between items-stretch">
                 <BowlSelection bowls={filteredBowls} />
                 <CenterBowl />
-                <BaseSelection ingredients={baseIngredients} />
+                {baseType === 1 ? (
+                    <BaseSelection ingredients={baseIngredients} />
+                ) : (
+                    <div className="bg-zinc-800 rounded-[3rem] p-6 text-white w-full lg:w-1/4 flex flex-col items-center justify-center shadow-lg">
+                        <div className="bg-white text-black font-bold rounded-full w-8 h-8 flex items-center justify-center mb-4 shrink-0">2</div>
+                        <p className="text-center text-sm text-zinc-300">No base options for Quark</p>
+                    </div>
+                )}
             </div>
             <IngredientSection categories={filteredCategories} ingredients={ingredients} />
             <SummaryBar prices={prices} />
