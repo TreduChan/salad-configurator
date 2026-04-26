@@ -11,6 +11,7 @@ export interface IngredientStore {
 	clearSelection: () => void;
 	addIngredient: (item: Ingredient) => void;
 	removeIngredient: (id: number) => void;
+	clearSlot: (slotId: string) => void;
 }
 
 export const useIngredientStore = create<IngredientStore>((set, get) => ({
@@ -26,12 +27,17 @@ export const useIngredientStore = create<IngredientStore>((set, get) => ({
 			set({ slots: { ...state.slots, base: item } })
 		} else {
 			const slotCount = state.selectedBowl?.slot_count ?? 0
+			let targetSlot: string | null = null
 			for (let i = 1; i <= slotCount; i++) {
 				const key = `slot-${i}`
-				if (!state.slots[key]) {
-					set({ slots: { ...state.slots, [key]: item } })
+				if (state.slots[key] == null) {
+					targetSlot = key
 					break
 				}
+			}
+
+			if (targetSlot) {
+				set({ slots: { ...state.slots, [targetSlot]: item } })
 			}
 		}
 	},
@@ -43,6 +49,12 @@ export const useIngredientStore = create<IngredientStore>((set, get) => ({
 		if (matchedKey) {
 			newSlots[matchedKey] = null
 			set({ slots: newSlots })
+		}
+	},
+	clearSlot: (slotId) => {
+		const state = get()
+		if (slotId in state.slots) {
+			set({ slots: { ...state.slots, [slotId]: null } })
 		}
 	},
 }));
