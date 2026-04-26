@@ -11,9 +11,9 @@ const CenterBowl = () => {
   const setBaseType = useIngredientStore((state) => state.setBaseType);
   const clearSelection = useIngredientStore((state) => state.clearSelection);
   const slots = useIngredientStore((state) => state.slots);
-  const activeIngredients = Object.values(slots).filter((i) => i !== null);
+  const clearSlot = useIngredientStore((state) => state.clearSlot);
   const selectedBowl = useIngredientStore((state) => state.selectedBowl);
-
+  const totalSlots = selectedBowl?.slot_count ?? 6;
 
 
   const handleClear = () => {
@@ -86,7 +86,41 @@ const CenterBowl = () => {
     className="absolute inset-0 w-full h-full object-contain z-20 pointer-events-none"
   />
   )}
-    </div>
+ {Object.entries(slots)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([slotKey, ingredient], index) => {
+    if (!ingredient) return null;
+
+    const angle = (360 / totalSlots) * index + (360 / totalSlots) / 2;
+
+    return (
+      <div
+        key={slotKey}
+        className="absolute z-30 flex flex-col items-center"
+        style={{
+          transform: `rotate(${angle}deg) translate(70px)`,
+        }}
+      >
+        {/* WEDGE IMAGE */}
+        <div style={{ transform: `rotate(-${angle}deg)` }} className="relative flex items-center justify-center">
+        <img
+          src={ingredient.wedge_image_url}
+          alt={ingredient.name}
+          className="w-12 h-12 object-contain"
+        />
+
+        {/* REMOVE BUTTON */}
+        <button
+          onClick={() => clearSlot(slotKey)}
+          className="absolute -bottom-5 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+          ×
+        </button>
+      </div>
+      </div>
+    );
+  })}
+      </div>
+  
 
      {/* Bottom Info */}
       <div className="mt-6 text-center">

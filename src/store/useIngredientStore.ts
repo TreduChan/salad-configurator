@@ -23,13 +23,13 @@ export const useIngredientStore = create<IngredientStore>((set, get) => ({
 	clearSelection: () => set({ slots: {}, baseType: 1, selectedBowl: null }),
 	addIngredient: (item) => {
 		const state = get()
-		if (item.category_Id === 6) {
+		if (item.categoryId === 6) {
 			set({ slots: { ...state.slots, base: item } })
 		} else {
 			const slotCount = state.selectedBowl?.slot_count ?? 0
 			let targetSlot: string | null = null
 			for (let i = 1; i <= slotCount; i++) {
-				const key = `slot-${i}`
+				const key = `${i}`
 				if (state.slots[key] == null) {
 					targetSlot = key
 					break
