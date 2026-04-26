@@ -10,11 +10,12 @@ interface SummaryBarProps {
 
 const SummaryBar: React.FC<SummaryBarProps> = ({ prices }) => {
   const slots = useIngredientStore((state) => state.slots);
-  const removeIngredient = useIngredientStore((state) => state.removeIngredient);
+  const clearSlot = useIngredientStore((state) => state.clearSlot);
 
-  const activeIngredients = Object.values(slots).filter(
-    (i): i is Ingredient => i !== null
+  const activeSlotItems = Object.entries(slots).filter(
+    ([, ingredient]): ingredient is Ingredient => ingredient !== null
   );
+  const activeIngredients = activeSlotItems.map(([, ingredient]) => ingredient);
   const totalWeightGrams = calculateTotalWeight(activeIngredients);
   const totalPrice = activeIngredients.reduce((sum, ingredient) => {
     const matchedPrice = prices.find((priceItem) => priceItem.item_id === ingredient.id);
@@ -37,9 +38,9 @@ const SummaryBar: React.FC<SummaryBarProps> = ({ prices }) => {
         </p>
         ) : (
           <div className="flex flex-wrap gap-2 mt-2">
-            {activeIngredients.map((ingredient, index) => (
+            {activeSlotItems.map(([slotKey, ingredient]) => (
               <div
-                key={ingredient.id || index}
+                key={slotKey}
                 className="flex items-center gap-2 px-3 py-1 bg-green-500 text-white text-xs rounded-full"
               >
                 {/* name */}
@@ -50,7 +51,7 @@ const SummaryBar: React.FC<SummaryBarProps> = ({ prices }) => {
                 </span>
                 {/* remove button */} 
                 <button
-                  onClick={() => removeIngredient(ingredient.id)}
+                  onClick={() => clearSlot(slotKey)}
                   className="ml-1 text-white hover:text-red-200 font-bold"
                 >
                   ×
