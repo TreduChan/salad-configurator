@@ -21,10 +21,10 @@ export default function Configurator() {
         async function fetchData() {
             setIsLoading(true);
             try {
-                const bowlsData = await getBowls();
+                const bowlsData = await getBowls(baseType);
                 setBowls(bowlsData);
 
-                const categoriesData = await getCategories();
+                const categoriesData = await getCategories(baseType);
                 setCategories(categoriesData);
 
                 const ingredientsData = await getIngredients();
@@ -42,7 +42,7 @@ export default function Configurator() {
             }
         }
         fetchData();
-    }, []);
+    }, [baseType]);
 
     if (isLoading) {
         return <div>Loading...</div>;
