@@ -45,7 +45,14 @@ export default function Configurator() {
     }, [baseType]);
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="flex flex-col gap-6 items-center justify-center min-h-screen">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-16 h-16 border-4 border-zinc-700 border-t-[#A2D135] rounded-full animate-spin"></div>
+                    <p className="text-white text-lg font-semibold">Ladataan...</p>
+                </div>
+            </div>
+        );
     }
 
     const filteredBowls = bowls.filter((bowl) => bowl.base_type_id === baseType);
