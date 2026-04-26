@@ -19,12 +19,14 @@ async function fetchData(endpoint: string) {
   return response.json()
 }
 
-export async function getBowls() {
-    return fetchData('bowls')
+export async function getBowls(typeId?: number) {
+  const endpoint = typeId ? `bowls?type_id=${typeId}` : 'bowls'
+  return fetchData(endpoint)
 }
 
-export async function getCategories() {
-    return fetchData('categories')
+export async function getCategories(typeId?: number) {
+  const endpoint = typeId ? `categories?type_id=${typeId}` : 'categories'
+  return fetchData(endpoint)
 }
 
 export async function getIngredients() {
