@@ -35,6 +35,15 @@ export default function IngredientSection({ categories, ingredients}: Props) {
         <IngredientCard key={ingredient.id} ingredient={ingredient}/>
       ))}
     </div>
+
+    <div className="mt-8 border-t border-zinc-700 pt-4">
+      <p className="text-sm text-zinc-300 mb-3">Dietary legend</p>
+      <div className="flex flex-wrap gap-3 text-sm">
+        <span className="rounded-full border border-zinc-500 px-3 py-1">G = Gluten-free</span>
+        <span className="rounded-full border border-zinc-500 px-3 py-1">L = Lactose-free</span>
+        <span className="rounded-full border border-zinc-500 px-3 py-1">V = Vegan</span>
+      </div>
+    </div>
     </div>
   );
 }
