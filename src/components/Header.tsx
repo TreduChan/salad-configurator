@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import LoginModal from "./LoginModal";
 import { useAuthStore } from "../store/useAuthStore";
+import logo from "../assets/Fresse_logo.png";
 
 
 export default function Header() {
@@ -20,9 +21,8 @@ export default function Header() {
         <>
         <header className="bg-zinc-800 text-white w-full h-32 flex justify-between items-start px-8 pt-4">
             
-            <Link to="/" className="w-24 h-24 rounded-full border-4 border-[#A2D135] flex items-center justify-center flex-col -mt-2 bg-zinc-800 shadow-lg">
-                <span>Fresh Food Factory</span>
-                <span>FRESSE</span>
+            <Link to="/" className="w-28 h-28 rounded-full border-4 border-[#A2D135] flex items-center justify-center flex-col -mt-2 bg-zinc-800 shadow-lg">
+                <img src={logo} alt="Fresse" className="w-full h-full object-contain scale-150" />
             </Link>
             <nav>
                 <Link to="/community">Saved recipes</Link>
