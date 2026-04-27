@@ -76,15 +76,16 @@ const CenterBowl = () => {
     <div className="w-80 h-80 rounded-full border-[12px] border-gray-200 bg-gray-50 flex flex-wrap items-center justify-center gap-2 p-4 shadow-inner relative overflow-hidden">
   
   {/* BASE BACKGROUND */}
-  {selectedBase?.image_url && (
+  {selectedBowl?.base_type_id && (
     <img
-      src={selectedBase.image_url}
+      src={selectedBowl.image_url}
       alt="base"
       className="absolute inset-0 w-full h-full object-cover z-10"
     />
   )}
 
-  {/* DIVIDER OVERLAY */}
+
+ {/* DIVIDER OVERLAY */}
   {selectedBowl?.slot_count && (
   <img
     src={dividerMap[selectedBowl.slot_count] ?? divider6}
