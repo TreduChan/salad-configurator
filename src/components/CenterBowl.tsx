@@ -14,7 +14,6 @@ const CenterBowl = () => {
   const slots = useIngredientStore((state) => state.slots);
   const clearSlot = useIngredientStore((state) => state.clearSlot);
   const selectedBowl = useIngredientStore((state) => state.selectedBowl);
-  const selectedBase = useIngredientStore((state) => state.slots.base);
   const totalSlots = selectedBowl?.slot_count ?? 6;
 
   const showToast = (message: string) => {
