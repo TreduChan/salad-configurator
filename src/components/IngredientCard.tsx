@@ -20,13 +20,13 @@ export default function IngredientCard({ ingredient }: Props) {
 
   return (
     <div
-      className="w-40 h-40 bg-white rounded-lg shadow-md p-3 flex flex-col justify-between cursor-pointer"
+      className="w-50 h-40 bg-white rounded-lg shadow-md p-3 flex flex-col justify-between cursor-pointer"
       onClick={() => addIngredient(ingredient)}
     >
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
           <div className="text-sm text-gray-500">{ingredient.categoryId}</div>
-          <div className="text-lg font-semibold truncate">{ingredient.name}</div>
+          <div className="text-black font-semibold truncate">{ingredient.name}</div>
 
       <div className="text-sm mt-1 text-green-600 font-medium">
             {isLoggedIn ? (
