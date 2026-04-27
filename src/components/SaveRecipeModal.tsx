@@ -20,6 +20,7 @@ export default function SaveRecipeModal({
   const [isPublic, setIsPublic] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const token = useAuthStore((state) => state.token);
   const slots = useIngredientStore((state) => state.slots);
@@ -30,6 +31,7 @@ export default function SaveRecipeModal({
     setRecipeName("");
     setIsPublic(false);
     setError(null);
+    setSuccess(false);
   }, [isOpen]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -71,8 +73,9 @@ export default function SaveRecipeModal({
         isPublic,
       });
 
+      setSuccess(true);
       onSaved?.();
-      onClose();
+      setTimeout(() => onClose(), 1500);
     } catch {
       setError("Failed to save recipe. Please try again.");
     } finally {
@@ -106,6 +109,7 @@ export default function SaveRecipeModal({
         </label>
 
         {error && <p className="text-sm text-red-500">{error}</p>}
+        {success && <p className="text-sm text-green-600 font-medium">Recipe saved!</p>}
 
         <div className="flex justify-end gap-2 mt-2">
           <button

@@ -14,6 +14,7 @@ const CenterBowl = () => {
   const slots = useIngredientStore((state) => state.slots);
   const clearSlot = useIngredientStore((state) => state.clearSlot);
   const selectedBowl = useIngredientStore((state) => state.selectedBowl);
+  const selectedBase = useIngredientStore((state) => state.slots.base);
   const totalSlots = selectedBowl?.slot_count ?? 6;
 
   const showToast = (message: string) => {
@@ -75,9 +76,9 @@ const CenterBowl = () => {
     <div className="w-80 h-80 rounded-full border-[12px] border-gray-200 bg-gray-50 flex flex-wrap items-center justify-center gap-2 p-4 shadow-inner relative overflow-hidden">
   
   {/* BASE BACKGROUND */}
-  {selectedBowl?.base_type_id && (
+  {selectedBase?.image_url && (
     <img
-      src={selectedBowl.image_url}
+      src={selectedBase.image_url}
       alt="base"
       className="absolute inset-0 w-full h-full object-cover z-10"
     />
