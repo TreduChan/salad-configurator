@@ -12,9 +12,12 @@ const SummaryBar: React.FC<SummaryBarProps> = ({ prices }) => {
   const slots = useIngredientStore((state) => state.slots);
   const clearSlot = useIngredientStore((state) => state.clearSlot);
 
-  const activeSlotItems = Object.entries(slots).filter(
-    ([, ingredient]): ingredient is Ingredient => ingredient !== null
-  );
+  const activeSlotItems = Object.entries(slots).reduce<Array<[string, Ingredient]>>((acc, [slotKey, ingredient]) => {
+    if (ingredient) {
+      acc.push([slotKey, ingredient]);
+    }
+    return acc;
+  }, []);
   const activeIngredients = activeSlotItems.map(([, ingredient]) => ingredient);
   const totalWeightGrams = calculateTotalWeight(activeIngredients);
   const totalPrice = activeIngredients.reduce((sum, ingredient) => {
@@ -45,9 +48,7 @@ const SummaryBar: React.FC<SummaryBarProps> = ({ prices }) => {
               >
                 {/* name */}
                 <span>
-                  {typeof ingredient === "string"
-                    ? ingredient
-                    : ingredient.name}
+                  {ingredient.name}
                 </span>
                 {/* remove button */} 
                 <button
