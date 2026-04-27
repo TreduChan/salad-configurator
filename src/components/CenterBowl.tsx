@@ -8,6 +8,7 @@ import divider6 from "../assets/jakaja_6_lohkoa.png";
 
 const CenterBowl = () => {
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const setBaseType = useIngredientStore((state) => state.setBaseType);
   const clearSelection = useIngredientStore((state) => state.clearSelection);
   const slots = useIngredientStore((state) => state.slots);
@@ -15,6 +16,10 @@ const CenterBowl = () => {
   const selectedBowl = useIngredientStore((state) => state.selectedBowl);
   const totalSlots = selectedBowl?.slot_count ?? 6;
 
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
 
   const handleClear = () => {
     if (window.confirm('Are you sure you want to empty the bowl?')) {
@@ -49,7 +54,7 @@ const CenterBowl = () => {
                     </button>
                     <button
                       type="button"
-                      onClick={() => alert('Feature coming soon!')}
+                      onClick={() => showToast('Undo feature coming soon!')}
                       className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center"
                       aria-label="Undo"
                     >
@@ -133,6 +138,16 @@ const CenterBowl = () => {
         onClose={() => setIsSaveModalOpen(false)}
         onSaved={() => clearSelection()}
       />
+
+      {toastMessage && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="mt-3 px-4 py-2 bg-zinc-700 text-white text-sm rounded-full shadow-md text-center"
+        >
+          {toastMessage}
+        </div>
+      )}
     </div>
   );
 };

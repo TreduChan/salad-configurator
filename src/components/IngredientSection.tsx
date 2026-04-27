@@ -20,11 +20,25 @@ export default function IngredientSection({ categories, ingredients}: Props) {
 
   return (
     <div className="bg-zinc-800 rounded-[3rem] p-8 text-white w-full shadow-lg">
-      <input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} className="rounded-full px-6 py-3 text-black outline-none w-64 border-2 border-transparent focus:border-[#A2D135]" placeholder="Search ingredients..." />
+      <input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} className="bg-white rounded-full px-6 py-3 text-black outline-none w-64 border-2 border-transparent focus:border-[#A2D135]" placeholder="Search ingredients..." />
       
       <div className="flex flex-wrap gap-4 mt-4">
+          <button
+            onClick={() => setActiveCategory('all')}
+            className={`font-bold px-6 py-2 rounded-full inline-block mt-4 ${
+              activeCategory === 'all'
+                ? 'bg-[#A2D135] text-black ring-2 ring-white'
+                : 'bg-zinc-600 text-white'
+            }`}
+          >
+            All
+          </button>
           {filteredCategories.map(category => (
-      <button key={category.id} onClick={() => setActiveCategory(category.id)} className="bg-[#A2D135] text-black font-bold px-6 py-2 rounded-full inline-block mt-4">
+      <button key={category.id} onClick={() => setActiveCategory(category.id)} className={`font-bold px-6 py-2 rounded-full inline-block mt-4 ${
+        activeCategory === category.id
+          ? 'bg-[#A2D135] text-black ring-2 ring-white'
+          : 'bg-zinc-600 text-white'
+      }`}>
         {category.name}
       </button>
       ))}
