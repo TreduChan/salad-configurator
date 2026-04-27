@@ -21,7 +21,7 @@ const BowlSelection = ({bowls} : Props) => {
           <button
             key={bowl.id}
             onClick={() => setBowl(bowl)}
-            className={`h-12 border-2 rounded-xl flex items-center px-4 transition-colors ${
+            className={`w-full h-12 border-2 rounded-xl flex items-center px-4 transition-colors ${
               selectedBowl?.id === bowl.id
                 ? "border-[#A2D135] text-[#A2D135]"
                 : "border-gray-600 text-white"
